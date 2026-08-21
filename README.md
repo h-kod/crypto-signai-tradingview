@@ -36,7 +36,12 @@ Chrome Extension (Manifest V3) · JavaScript · Binance Market Data API · Gemin
 
 ## About this repository
 
-This is a public showcase of the project. The implementation (`core`) is kept in a private repository and linked here as a submodule, available on request.
+This is a public showcase of the project. The implementation (`core`) is kept in a private repository, available on request.
+
+**Links:**
+- 🌐 [Project website](https://h-kod.github.io/crypto-signai-tradingview/)
+- 🔗 [Chrome Web Store](https://chromewebstore.google.com/detail/crypto-signai-tradingview/epjagihdnkknabchhljignmbhjlfciai)
+- 📦 [Private implementation](https://github.com/h-kod/crypto-signai-tradingview-core)
 
 ---
 
