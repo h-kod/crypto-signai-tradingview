@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CryptoSignAI — AI Trading Signals for TradingView</title>
+<meta name="description" content="A Chrome extension that turns TradingView charts into instant AI-powered long/short trading signals using Gemini, ChatGPT and free LLMs.">
+<link rel="icon" href="icon.png">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg-elevated: #10162a;
+    --border: #1f2740;
+    --text: #e8ecf6;
+    --text-dim: #8891ab;
+    --cyan: #22d3c8;
+    --red: #ef4444;
+    --indigo: #6366f1;
+    --indigo-dark: #4f46e5;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  nav.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 17px; text-decoration: none; }
+  .brand img { width: 28px; height: 28px; border-radius: 7px; }
+  nav.top .gh-link {
+    font-size: 14px;
+    color: var(--text-dim);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    padding: 7px 14px;
+    border-radius: 999px;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  nav.top .gh-link:hover { border-color: var(--indigo); color: var(--text); }
+
+  header.hero { padding: 56px 0 40px; text-align: center; }
+  header.hero h1 {
+    font-size: clamp(32px, 5vw, 52px);
+    margin: 0 0 16px;
+    letter-spacing: -0.02em;
+  }
+  header.hero h1 .accent { color: var(--cyan); }
+  header.hero p.tagline {
+    max-width: 560px;
+    margin: 0 auto 32px;
+    color: var(--text-dim);
+    font-size: 17px;
+  }
+
+  .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 48px; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    transition: transform .15s ease, filter .15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+  .btn-primary { background: var(--indigo); color: #fff; }
+  .btn-secondary { background: var(--bg-elevated); color: var(--text); border: 1px solid var(--border); }
+
+  .preview { text-align: center; margin-bottom: 72px; }
+  .preview img {
+    max-width: 100%;
+    width: 780px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 60px rgba(0,0,0,.5);
+  }
+
+  section.features { padding: 8px 0 64px; }
+  section.features h2 {
+    text-align: center;
+    font-size: 26px;
+    margin-bottom: 40px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+  }
+  .card .icon { font-size: 22px; margin-bottom: 10px; display: block; }
+  .card h3 { font-size: 16px; margin: 0 0 8px; }
+  .card p { font-size: 14px; color: var(--text-dim); margin: 0; }
+
+  section.how { padding: 0 0 72px; }
+  section.how h2 { text-align: center; font-size: 26px; margin-bottom: 40px; }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    counter-reset: step;
+  }
+  .step { text-align: center; }
+  .step .num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--cyan), var(--indigo));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #05070d;
+    margin: 0 auto 14px;
+  }
+  .step h3 { font-size: 15px; margin: 0 0 6px; }
+  .step p { font-size: 13px; color: var(--text-dim); margin: 0; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 0 40px;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+  footer .disclaimer { max-width: 560px; margin: 0 auto 14px; }
+  footer a { text-decoration: none; border-bottom: 1px solid transparent; }
+  footer a:hover { border-bottom-color: currentColor; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav class="top">
+    <a class="brand" href="#">
+      <img src="icon.png" alt="CryptoSignAI">
+      CryptoSignAI
+    </a>
+    <a class="gh-link" href="https://github.com/h-kod/crypto-signai-tradingview" target="_blank" rel="noopener">View on GitHub ↗</a>
+  </nav>
+
+  <header class="hero">
+    <h1>AI trading signals,<br>right on your <span class="accent">TradingView</span> chart</h1>
+    <p class="tagline">A Chrome extension that reads any TradingView chart and turns it into a long/short call — with entry, take-profit and stop-loss — in one click.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/crypto-signai-tradingview/epjagihdnkknabchhljignmbhjlfciai" target="_blank" rel="noopener">Add to Chrome — it's free</a>
+      <a class="btn btn-secondary" href="https://github.com/h-kod/crypto-signai-tradingview" target="_blank" rel="noopener">View on GitHub</a>
+    </div>
+  </header>
+
+  <div class="preview">
+    <img src="image.jpg" alt="CryptoSignAI analysis preview showing a long/short signal with entry, take-profit and stop-loss">
+  </div>
+
+  <section class="features">
+    <h2>Everything you need to act on a chart</h2>
+    <div class="grid">
+      <div class="card">
+        <span class="icon">📈</span>
+        <h3>One-click analysis</h3>
+        <p>Captures the active TradingView chart and market context automatically — no manual screenshots.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🤖</span>
+        <h3>Multi-provider AI</h3>
+        <p>Gemini, ChatGPT and free LLM fallbacks via OpenRouter and LLM7 — pick what fits your budget.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🎯</span>
+        <h3>Actionable signals</h3>
+        <p>Entry, take-profit, stop-loss and a confidence score — not just a direction.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🔎</span>
+        <h3>Automatic pair detection</h3>
+        <p>Recognizes the traded symbol across major exchanges without any setup.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🕘</span>
+        <h3>Signal history</h3>
+        <p>Every analysis is saved locally so you can revisit past calls at any time.</p>
+      </div>
+      <div class="card">
+        <span class="icon">🌍</span>
+        <h3>Localized UI</h3>
+        <p>Available in English, Turkish, German, French, Spanish, Russian, Chinese, Japanese, Arabic and Portuguese.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="how">
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <h3>Open a chart</h3>
+        <p>Go to any symbol on TradingView.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <h3>Generate a signal</h3>
+        <p>Click the extension icon, then "Generate AI Signal".</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <h3>Act on it</h3>
+        <p>Get a long/short call with entry, take-profit and stop-loss.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="disclaimer">CryptoSignAI is an analysis tool, not financial advice. Trading involves risk — always do your own research.</p>
+    <p>Built by <a href="https://github.com/h-kod" target="_blank" rel="noopener">@h-kod</a></p>
+  </footer>
+</div>
+
+</body>
+</html>
