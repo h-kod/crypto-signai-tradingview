@@ -6,6 +6,8 @@
 
 **One-click AI trading analysis, right on top of your TradingView charts.**
 
+[![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-Install%20Extension-4285F4?logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/crypto-signai-tradingview/epjagihdnkknabchhljignmbhjlfciai)
+
 ![Manifest V3](https://img.shields.io/badge/Chrome%20Extension-Manifest%20V3-4285F4?logo=googlechrome&logoColor=white)
 ![Languages](https://img.shields.io/badge/i18n-10%20languages-2ea44f)
 ![LLM Providers](https://img.shields.io/badge/AI-Gemini%20%C2%B7%20ChatGPT%20%C2%B7%20OpenRouter-6f42c1)
